@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LAWSEER is an educational counterfactual decision simulator.">
+  <title>LAWSEER | See how a decision changes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="LAWSEER home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>LAWSEER</span>
+      </a>
+      <div class="topbar-meta">
+        <span class="demo-pill"><span class="pulse"></span> Demo mode</span>
+        <span class="topbar-note">LexHack 2026 · decision support prototype</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">COUNTERFACTUAL DECISION SIMULATOR <span>01</span></p>
+          <h1 id="hero-title">See how a decision changes <em>before</em> you make it.</h1>
+          <p class="hero-subtitle">LAWSEER explores possible legal/civic consequences by simulating alternative actions and showing what each path depends on.</p>
+        </div>
+        <div class="hero-signal" aria-label="Core innovation">
+          <div class="signal-line"><span>change one fact</span><i></i></div>
+          <div class="signal-line"><span>recompute the graph</span><i></i></div>
+          <div class="signal-line signal-line--accent"><span>see the paths shift</span><b>↗</b></div>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Decision simulator">
+        <aside class="input-rail">
+          <div class="rail-heading">
+            <div><span class="section-index">01</span><h2>Set the scene</h2></div>
+            <span class="tiny-label">INPUT</span>
+          </div>
+          <p class="rail-intro">Start with what you know. LAWSEER keeps uncertain facts visible instead of filling them in.</p>
+
+          <label class="field-label" for="narrative">Situation</label>
+          <textarea id="narrative" class="narrative-input" rows="6">A tenant receives a sudden request from a landlord to leave within a short period. The tenant is deciding whether to leave now or seek formal clarification first.</textarea>
+
+          <div class="facts-heading"><span class="field-label">Structured facts</span><span class="fact-count">5 tracked</span></div>
+          <div class="fact-list">
+            <label class="fact-row"><span class="fact-icon">▣</span><span class="fact-copy"><b>Written agreement exists</b><small>Terms can be compared</small></span><input id="fact-agreement" type="checkbox" checked><span class="toggle" aria-hidden="true"></span></label>
+            <label class="fact-row"><span class="fact-icon">✉</span><span class="fact-copy"><b>Departure request message</b><small>Message or record exists</small></span><input id="fact-message" type="checkbox" checked><span class="toggle" aria-hidden="true"></span></label>
+            <label class="fact-row fact-row--number"><span class="fact-icon">◷</span><span class="fact-copy"><b>Requested timeframe</b><small>Days requested</small></span><input id="fact-days" class="number-input" type="number" min="0" max="365" value="14" aria-label="Requested timeframe in days"><span class="unit">days</span></label>
+            <label class="fact-row fact-row--text"><span class="fact-icon">⌖</span><span class="fact-copy"><b>Jurisdiction</b><small>Used as a dependency only</small></span><input id="fact-jurisdiction" class="text-input" type="text" value="Demo jurisdiction" aria-label="Jurisdiction"></label>
+          </div>
+
+          <div class="actions-mini">
+            <span class="field-label">Proposed actions</span>
+            <div class="action-chip"><span>A</span> Leave immediately</div>
+            <div class="action-chip"><span>B</span> Ask for formal clarification</div>
+          </div>
+
+          <button id="simulate-button" class="primary-button" type="button"><span>Simulate decision</span><b>→</b></button>
+          <button id="reset-button" class="text-button" type="button">Reset demo scenario</button>
+        </aside>
+
+        <div class="results-column">
+          <div id="app-status" class="app-status" role="status" aria-live="polite"><span class="status-dot"></span> Ready to map your decision</div>
+          <section id="empty-state" class="empty-state" aria-labelledby="empty-title">
+            <div class="empty-orbit"><span></span><span></span><span></span><strong>→</strong></div>
+            <p class="eyebrow">YOUR DECISION GRAPH</p>
+            <h2 id="empty-title">Make the first move visible.</h2>
+            <p>Run the demo to see the same situation split into two possible paths, each with its own evidence needs and uncertainty.</p>
+            <button class="secondary-button" type="button" data-run-simulate>Run the demo <span>↗</span></button>
+          </section>
+
+          <div id="results" class="results" hidden>
+            <section class="state-strip" aria-labelledby="state-title">
+              <div class="state-heading"><div><p class="eyebrow">DECISION STATE <span>02</span></p><h2 id="state-title">What the simulator sees</h2></div><span class="state-id" id="simulation-id">—</span></div>
+              <p id="state-narrative" class="state-narrative"></p>
+              <div id="constraint-list" class="constraint-list"></div>
+            </section>
+
+            <section class="counterfactual-panel" aria-labelledby="counterfactual-title">
+              <div class="counterfactual-copy"><p class="eyebrow accent-eyebrow">COUNTERFACTUAL CONTROL <span>03</span></p><h2 id="counterfactual-title">What if this fact changes?</h2><p>One switch, a fresh simulation. The graph and downstream information are recalculated from the updated state.</p></div>
+              <div class="notice-control"><span class="control-label">Formal notice received</span><div class="segmented" role="group" aria-label="Formal notice received"><button id="notice-no" type="button" aria-pressed="true">No</button><button id="notice-yes" type="button" aria-pressed="false">Yes</button></div><span class="control-caption" id="notice-caption">Current state: not recorded</span></div>
+            </section>
+            <div id="change-banner" class="change-banner" hidden><span class="change-icon">↻</span><div><b id="change-title">Graph recomputed</b><p id="change-detail"></p></div><span class="changed-tag">CHANGED</span></div>
+
+            <section class="map-section" aria-labelledby="map-title">
+              <div class="section-header"><div><p class="eyebrow">CONSEQUENCE MAP <span>04</span></p><h2 id="map-title">Two paths from the same state</h2></div><span class="scenario-note">All outcomes are scenarios, not predictions</span></div>
+              <div id="branch-grid" class="branch-grid"></div>
+            </section>
+
+            <section class="comparison-section" aria-labelledby="comparison-title">
+              <div class="section-header"><div><p class="eyebrow">COMPARISON <span>05</span></p><h2 id="comparison-title">Choose with the dependencies in view</h2></div></div>
+              <div id="comparison-grid" class="comparison-grid"></div>
+            </section>
+
+            <section class="evidence-section" aria-labelledby="evidence-title">
+              <div class="section-header"><div><p class="eyebrow">EVIDENCE LEDGER <span>06</span></p><h2 id="evidence-title">What supports the map</h2></div><span class="scenario-note">Evidence is not proof of an outcome</span></div>
+              <div class="evidence-columns"><div><h3><span class="legend-dot supported"></span>Supported by this state</h3><div id="supported-evidence" class="evidence-list"></div></div><div><h3><span class="legend-dot missing"></span>Missing or to collect</h3><div id="missing-evidence" class="evidence-list"></div></div><div><h3><span class="legend-dot uncertain"></span>Uncertain</h3><div id="uncertain-evidence" class="evidence-list"></div></div></div>
+            </section>
+
+            <section class="next-steps" aria-labelledby="next-title"><div><p class="eyebrow">CAUTIOUS NEXT STEPS <span>07</span></p><h2 id="next-title">Move the decision forward, carefully.</h2></div><ol id="next-step-list"></ol></section>
+          </div>
+        </div>
+      </section>
+
+      <section class="safety-panel"><div class="safety-mark">!</div><div><p class="eyebrow">SAFETY FIRST</p><p><strong>LAWSEER is an educational decision-support prototype.</strong> It does not provide legal advice or predict legal outcomes. Verify important decisions with official sources or a qualified professional.</p></div><span class="safety-rule">NOT A LAWYER</span></section>
+    </main>
+    <footer><span>LAWSEER · LexHack 2026</span><span>Transparent demo rules · No API key required</span></footer>
+  </div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

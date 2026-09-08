@@ -1,0 +1,1 @@
+"""LAWSEER application package."""
