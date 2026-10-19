@@ -4,7 +4,6 @@ from app.engine import simulate
 from app.knowledge import default_situation
 from app.main import app
 
-
 client = TestClient(app)
 
 
@@ -21,12 +20,17 @@ def test_static_files_and_root_are_served() -> None:
 
 
 def test_simulation_schema_and_two_branches() -> None:
-    response = client.post("/api/simulate", json={"situation": default_situation().model_dump(mode="json")})
+    response = client.post(
+        "/api/simulate", json={"situation": default_situation().model_dump(mode="json")}
+    )
     assert response.status_code == 200
     payload = response.json()
     assert payload["mode"] == "demo"
     assert len(payload["branches"]) == 2
-    assert {branch["action"]["id"] for branch in payload["branches"]} == {"leave_now", "clarify_first"}
+    assert {branch["action"]["id"] for branch in payload["branches"]} == {
+        "leave_now",
+        "clarify_first",
+    }
     assert payload["comparison"][0]["uncertainty"]
 
 
@@ -46,7 +50,9 @@ def test_simulation_is_deterministic() -> None:
 
 def test_counterfactual_changes_graph_and_downstream_paths() -> None:
     situation = default_situation()
-    baseline = client.post("/api/simulate", json={"situation": situation.model_dump(mode="json")}).json()
+    baseline = client.post(
+        "/api/simulate", json={"situation": situation.model_dump(mode="json")}
+    ).json()
     changed = client.post(
         "/api/counterfactual",
         json={
@@ -62,8 +68,14 @@ def test_counterfactual_changes_graph_and_downstream_paths() -> None:
     assert payload["changed_to"] is True
     assert payload["changed_because"]
     assert payload["simulation_id"] != baseline["simulation_id"]
-    assert payload["branches"][0]["uncertainty_score"] != baseline["branches"][0]["uncertainty_score"]
-    assert payload["branches"][1]["consequences"][2]["title"] != baseline["branches"][1]["consequences"][2]["title"]
+    assert (
+        payload["branches"][0]["uncertainty_score"]
+        != baseline["branches"][0]["uncertainty_score"]
+    )
+    assert (
+        payload["branches"][1]["consequences"][2]["title"]
+        != baseline["branches"][1]["consequences"][2]["title"]
+    )
 
 
 def test_evidence_and_uncertainty_follow_missing_written_agreement() -> None:
@@ -71,7 +83,9 @@ def test_evidence_and_uncertainty_follow_missing_written_agreement() -> None:
     situation.facts[0].value = False
     result = simulate(situation)
     assert any(item.id == "written-agreement" for item in result.missing_evidence)
-    assert any(fact.key == "agreement-content" for fact in result.missing_or_uncertain_facts)
+    assert any(
+        fact.key == "agreement-content" for fact in result.missing_or_uncertain_facts
+    )
     assert result.branches[0].uncertainty_score > 48
     assert result.branches[1].uncertainty_score > 27
 

@@ -2,10 +2,20 @@
 
 from typing import Annotated, Literal, Union
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StrictBool,
+    StrictInt,
+    StrictStr,
+    field_validator,
+)
 
-
-FactValue = Annotated[Union[StrictBool, StrictInt, StrictStr, None], Field(description="A JSON-safe fact value")]
+FactValue = Annotated[
+    Union[StrictBool, StrictInt, StrictStr, None],
+    Field(description="A JSON-safe fact value"),
+]
 
 
 class StrictModel(BaseModel):

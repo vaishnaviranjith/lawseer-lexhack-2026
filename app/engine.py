@@ -171,7 +171,9 @@ def _constraints(facts: Mapping[str, Fact]) -> list[Constraint]:
                 if timeframe is not None
                 else "The requested timeline is not recorded."
             ),
-            status="relevant" if timeframe is not None and timeframe <= 30 else "uncertain",
+            status=(
+                "relevant" if timeframe is not None and timeframe <= 30 else "uncertain"
+            ),
             based_on=["requested_departure_days"],
             confidence=0.78 if timeframe is not None else 0.35,
         ),
@@ -187,7 +189,11 @@ def _branch(
     agreement_exists = _bool(facts, "written_agreement_exists")
     formal_notice = _bool(facts, "formal_notice_received")
     timeframe = _int(facts, "requested_departure_days")
-    timeframe_label = f"within {timeframe} days" if timeframe is not None else "within the stated short period"
+    timeframe_label = (
+        f"within {timeframe} days"
+        if timeframe is not None
+        else "within the stated short period"
+    )
     evidence = _build_evidence(facts, action.id)
 
     if action.id == "leave_now":
@@ -210,7 +216,10 @@ def _branch(
                 detail="Leaving first can reduce the opportunity to organize the request, terms, and response in one dated record.",
                 kind="evidence",
                 confidence=0.7,
-                depends_on=["departure_request_message_exists", "written_agreement_exists"],
+                depends_on=[
+                    "departure_request_message_exists",
+                    "written_agreement_exists",
+                ],
             ),
             Consequence(
                 id="procedural-clarity-leave",
@@ -251,7 +260,10 @@ def _branch(
                 ),
                 kind="evidence",
                 confidence=0.78,
-                depends_on=["departure_request_message_exists", "formal_notice_received"],
+                depends_on=[
+                    "departure_request_message_exists",
+                    "formal_notice_received",
+                ],
             ),
             Consequence(
                 id="clarify-time",
@@ -288,11 +300,23 @@ def _branch(
         summary = "This branch prioritizes a written record and makes its procedural dependencies visible before acting."
 
     steps = [
-        ScenarioStep(label="Current state", detail="Tenant is deciding how to respond to a sudden departure request.", tone="state"),
+        ScenarioStep(
+            label="Current state",
+            detail="Tenant is deciding how to respond to a sudden departure request.",
+            tone="state",
+        ),
         ScenarioStep(label=action.title, detail=action.description, tone="action"),
-        ScenarioStep(label="Possible consequence", detail=consequences[0].detail, tone="possible"),
-        ScenarioStep(label="Evidence needed", detail=evidence[0].label, tone="evidence"),
-        ScenarioStep(label="Uncertainty", detail=f"{_uncertainty_label(score).capitalize()} uncertainty ({score}/100)", tone="uncertainty"),
+        ScenarioStep(
+            label="Possible consequence", detail=consequences[0].detail, tone="possible"
+        ),
+        ScenarioStep(
+            label="Evidence needed", detail=evidence[0].label, tone="evidence"
+        ),
+        ScenarioStep(
+            label="Uncertainty",
+            detail=f"{_uncertainty_label(score).capitalize()} uncertainty ({score}/100)",
+            tone="uncertainty",
+        ),
     ]
     return ScenarioBranch(
         id=f"branch-{action.id}",
@@ -310,12 +334,16 @@ def _branch(
 
 
 def _normalize(situation: Situation) -> Situation:
-    actions = situation.actions or [action.model_copy(deep=True) for action in DEFAULT_ACTIONS]
+    actions = situation.actions or [
+        action.model_copy(deep=True) for action in DEFAULT_ACTIONS
+    ]
     return situation.model_copy(deep=True, update={"actions": actions})
 
 
 def _simulation_id(situation: Situation) -> str:
-    payload = json.dumps(situation.model_dump(mode="json"), sort_keys=True, separators=(",", ":"))
+    payload = json.dumps(
+        situation.model_dump(mode="json"), sort_keys=True, separators=(",", ":")
+    )
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
@@ -333,14 +361,28 @@ def simulate(
     facts = _fact_map(normalized)
     changed_keys = [changed_fact_key] if changed_fact_key else []
     missing_or_uncertain: list[Fact] = []
-    for key in ("written_agreement_exists", "departure_request_message_exists", "requested_departure_days", "jurisdiction", "formal_notice_received"):
+    for key in (
+        "written_agreement_exists",
+        "departure_request_message_exists",
+        "requested_departure_days",
+        "jurisdiction",
+        "formal_notice_received",
+    ):
         fact = facts.get(key)
         if fact is None or fact.value is None or fact.confidence < 0.55:
             if fact is not None:
-                missing_or_uncertain.append(fact.model_copy(update={"confidence": min(fact.confidence, 0.5)}))
+                missing_or_uncertain.append(
+                    fact.model_copy(update={"confidence": min(fact.confidence, 0.5)})
+                )
     if not _bool(facts, "written_agreement_exists"):
         missing_or_uncertain.append(
-            Fact(key="agreement-content", label="Content of written terms", value=None, source="not supplied", confidence=0.25)
+            Fact(
+                key="agreement-content",
+                label="Content of written terms",
+                value=None,
+                source="not supplied",
+                confidence=0.25,
+            )
         )
     branches = [_branch(action, facts, changed_keys) for action in normalized.actions]
     if len(branches) < 2:
@@ -354,12 +396,20 @@ def simulate(
         DecisionComparison(
             action_id=branch.action.id,
             action_title=branch.action.title,
-            possible_consequences=[consequence.title for consequence in branch.consequences],
-            evidence_required=[item.label for item in branch.evidence_required if item.status != "supported"],
+            possible_consequences=[
+                consequence.title for consequence in branch.consequences
+            ],
+            evidence_required=[
+                item.label
+                for item in branch.evidence_required
+                if item.status != "supported"
+            ],
             uncertainty=f"{branch.uncertainty_label.capitalize()} ({branch.uncertainty_score}/100)",
             dependencies=branch.dependencies,
             suggested_next_step=(
-                "Preserve the request and timeline before committing. " + branch.dependencies[0] + "."
+                "Preserve the request and timeline before committing. "
+                + branch.dependencies[0]
+                + "."
                 if branch.action.id == "leave_now"
                 else "Put the clarification request in writing, then check the official process."
             ),

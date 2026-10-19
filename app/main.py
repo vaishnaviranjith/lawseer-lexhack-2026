@@ -10,7 +10,6 @@ from .engine import simulate
 from .knowledge import default_situation
 from .models import CounterfactualRequest, SimulationRequest, SimulationResult
 
-
 BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(
@@ -44,7 +43,9 @@ def run_counterfactual(request: CounterfactualRequest) -> SimulationResult:
     facts = [fact.model_copy(deep=True) for fact in request.situation.facts]
     target = next((fact for fact in facts if fact.key == request.fact_key), None)
     if target is None:
-        raise HTTPException(status_code=422, detail=f"Unknown fact key: {request.fact_key}")
+        raise HTTPException(
+            status_code=422, detail=f"Unknown fact key: {request.fact_key}"
+        )
     previous_value = target.value
     target.value = request.new_value
     updated_situation = request.situation.model_copy(update={"facts": facts})
