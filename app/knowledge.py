@@ -2,7 +2,6 @@
 
 from .models import Action, Fact, Situation
 
-
 DEFAULT_ACTIONS = [
     Action(
         id="leave_now",
