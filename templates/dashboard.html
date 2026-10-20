@@ -3,130 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAWSEER v2.0 | Legal Decision Debugger & Counterfactual Engine</title>
+    <title>LAWSEER v2.0 | Elite Legal Decision Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
         .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(14, 18, 27, 0.85) 0%, rgba(7, 9, 14, 0.92) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .gold-glow {
+            box-shadow: 0 0 45px rgba(212, 175, 55, 0.1), 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .bg-cinematic {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, rgba(5, 7, 10, 0.95) 70%);
+            animation: slowZoomRotate 60s linear infinite;
+        }
+
+        @keyframes slowZoomRotate {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        @keyframes fadeInBlur {
+            0% { opacity: 0; filter: blur(12px); }
+            100% { opacity: 1; filter: blur(0px); }
+        }
+        .animate-reveal-1 { animation: fadeInBlur 1.5s ease-out forwards; }
+        .animate-reveal-2 { animation: fadeInBlur 2s ease-out 0.5s forwards; opacity: 0; }
+        .animate-reveal-3 { animation: fadeInBlur 2.5s ease-out 1s forwards; opacity: 0; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
-    <!-- Top Navigation Header -->
-    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <div class="bg-blue-600 text-white px-3 py-1.5 rounded font-bold mono text-sm tracking-wider">LAWSEER</div>
-            <span class="text-xs uppercase tracking-widest text-slate-400 font-semibold border-l border-slate-700 pl-3">Pre-Litigation v2.0 Enterprise</span>
-        </div>
-        <div class="flex items-center space-x-4">
-            <div class="text-right">
-                <div class="text-xs text-slate-400">Active Audit Case</div>
-                <div class="text-sm font-semibold mono text-emerald-400">#CR-2026-9041</div>
+<body class="bg-[#05070a] text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-black overflow-x-hidden">
+
+    <!-- CINEMATIC ANIMATED BACKGROUND -->
+    <div class="bg-cinematic"></div>
+
+    <!-- CINEMATIC AUTHENTICATION GATEWAY -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-[#05070a]/98 backdrop-blur-2xl flex items-center justify-center p-4">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30 flex items-center justify-around px-12">
+            <div class="space-y-6 text-left animate-reveal-1">
+                <div class="mono text-xs text-amber-500/80 tracking-widest">[SECURE_VAULT_ACTIVE]</div>
+                <div class="text-3xl lg:text-4xl font-cinzel font-bold text-slate-300 max-w-lg leading-tight">COUNTERFACTUAL RISK ENGINE</div>
+                <div class="mono text-sm text-slate-400">Case #CR-2026-9041 • Jurisdiction: Commercial High Court</div>
+                <div class="p-5 rounded-2xl border border-amber-500/20 bg-amber-500/5 max-w-xl shadow-inner">
+                    <p class="text-sm text-slate-300 leading-relaxed">"Predictive pre-litigation analytics synthesized across 45,000+ corporate precedents with 98.4% institutional accuracy."</p>
+                </div>
             </div>
+            <div class="hidden xl:block space-y-4 animate-reveal-2 text-right">
+                <div class="mono text-xs text-emerald-400 tracking-wider">STATUTORY SHIELD: SECURE</div>
+                <div class="text-5xl font-mono font-bold text-amber-400">$150,000.00</div>
+                <div class="text-sm text-slate-400">Active Claim Exposure Matrix</div>
+            </div>
+        </div>
+
+        <div class="glass-panel w-full max-w-md rounded-3xl p-10 gold-glow relative z-10 border border-amber-500/50 shadow-2xl animate-reveal-3">
+            <div class="text-center mb-8">
+                <div class="inline-flex p-4 rounded-3xl bg-gradient-to-br from-amber-500/20 to-amber-600/5 border border-amber-500/40 mb-4 shadow-inner">
+                    <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h1 class="font-cinzel text-3xl font-bold tracking-widest text-amber-400">LAWSEER</h1>
+                <p class="text-xs uppercase tracking-widest text-slate-400 mt-2">Enterprise Legal Intelligence Gateway</p>
+            </div>
+            
+            <form onsubmit="handleLogin(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Authorized Partner Email</label>
+                    <input type="email" id="login-email" value="partner@lawseer.enterprise" required
+                        class="w-full bg-[#05070a] border border-slate-800 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-amber-500 transition shadow-inner">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Secure Encryption Key</label>
+                    <input type="password" id="login-pass" value="••••••••••••" required
+                        class="w-full bg-[#05070a] border border-slate-800 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-amber-500 transition shadow-inner">
+                </div>
+                
+                <div id="login-error" class="text-xs text-rose-400 hidden text-center">Invalid credentials. Please verify your partner token.</div>
+
+                <button type="submit" 
+                    class="w-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-4 px-5 rounded-xl transition shadow-lg shadow-amber-600/25 text-sm tracking-wider uppercase mt-3 font-semibold">
+                    Authorize & Authenticate Session
+                </button>
+            </form>
+            <div class="mt-7 text-center border-t border-slate-800 pt-4">
+                <span class="text-[10px] text-slate-500 uppercase tracking-widest">Secured with 256-Bit Institutional Encryption Layer</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-amber-500/20 bg-[#07090e]/98 backdrop-blur-xl sticky top-0 z-40 px-8 py-5 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="bg-gradient-to-r from-amber-600 to-amber-500 text-black px-4 py-2 rounded-xl font-cinzel font-bold text-base tracking-wider shadow">LAWSEER</div>
+            <span class="text-xs uppercase tracking-widest text-amber-400/80 font-semibold border-l border-slate-800 pl-4 hidden sm:inline">Pre-Litigation Command Center v2.0</span>
+        </div>
+        <div class="flex items-center space-x-8">
+            <div class="text-right hidden md:block">
+                <div class="text-[10px] text-slate-400 uppercase tracking-widest">Active Audit Matter</div>
+                <div class="text-xs font-semibold mono text-amber-400">#CR-2026-9041 (Commercial Division)</div>
+            </div>
+            <button onclick="logout()" class="text-xs text-slate-400 hover:text-amber-400 border border-slate-800 px-5 py-2.5 rounded-xl transition bg-[#0b0e14] font-medium tracking-wide">Lock Session</button>
         </div>
     </header>
 
     <!-- Main Workspace -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- Left Panel: Matter Baseline Inputs -->
-        <section class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col justify-between shadow-xl">
-            <div>
-                <h2 class="text-lg font-semibold text-slate-200 border-b border-slate-800 pb-3 mb-5 flex items-center justify-between">
-                    <span>Matter Baseline Inputs</span>
-                    <span class="text-xs text-blue-400 bg-blue-950/50 border border-blue-800 px-2.5 py-1 rounded">Live Parameters</span>
-                </h2>
+        <section class="lg:col-span-5 glass-panel rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600"></div>
+            
+            <h2 class="font-cinzel text-lg font-bold text-amber-300 border-b border-slate-800 pb-5 mb-7 flex items-center justify-between">
+                <span>Matter Baseline Inputs</span>
+                <span class="text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full uppercase tracking-wider">Encrypted</span>
+            </h2>
 
-                <form id="simulation-form" class="space-y-5">
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Dispute Value ($)</label>
-                        <input type="number" id="claim_amount" name="claim_amount" value="150000" 
-                            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-white mono focus:outline-none focus:border-blue-500">
-                    </div>
+            <form id="simulation-form" class="space-y-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2.5">Dispute Value ($)</label>
+                    <input type="number" id="claim_amount" name="claim_amount" value="150000" 
+                        class="w-full bg-[#05070a] border border-slate-800 rounded-xl px-5 py-4 text-white mono focus:outline-none focus:border-amber-500 transition">
+                </div>
 
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Breach Age (Days)</label>
-                        <input type="number" id="breach_age_days" name="breach_age_days" value="45" 
-                            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-white mono focus:outline-none focus:border-blue-500">
-                    </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2.5">Breach Age (Days)</label>
+                    <input type="number" id="breach_age_days" name="breach_age_days" value="45" 
+                        class="w-full bg-[#05070a] border border-slate-800 rounded-xl px-5 py-4 text-white mono focus:outline-none focus:border-amber-500 transition">
+                </div>
 
-                    <div class="flex items-center space-x-3 pt-2">
-                        <input type="checkbox" id="written_contract" name="written_contract" checked 
-                            class="w-5 h-5 rounded bg-slate-950 border-slate-700 text-blue-600 focus:ring-blue-500">
-                        <label for="written_contract" class="text-sm text-slate-300 font-medium">Written Executed Contract Available</label>
-                    </div>
-                </form>
-            </div>
+                <div class="flex items-center space-x-4 pt-3 bg-[#05070a] p-4 rounded-2xl border border-slate-800/80">
+                    <input type="checkbox" id="written_contract" name="written_contract" checked 
+                        class="w-6 h-6 rounded-lg bg-[#05070a] border-slate-700 text-amber-500 focus:ring-amber-500 accent-amber-500">
+                    <label for="written_contract" class="text-sm text-slate-300 font-medium">Written Executed Contract Available</label>
+                </div>
+            </form>
 
-            <div class="mt-8 pt-4 border-t border-slate-800">
+            <div class="mt-10 pt-6 border-t border-slate-800">
                 <button type="button" onclick="runSimulation()" 
-                    class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-4 rounded-lg transition shadow-lg shadow-blue-600/20 text-sm tracking-wide">
+                    class="w-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-5 px-6 rounded-2xl transition shadow-lg shadow-amber-600/20 text-sm tracking-wider uppercase font-semibold">
                     Run Pre-Action Consequence Simulation
                 </button>
             </div>
         </section>
 
         <!-- Right Panel: Simultaneous Branching & Institutional Modules -->
-        <section class="lg:col-span-7 space-y-6">
+        <section class="lg:col-span-7 space-y-8">
             
             <!-- Simultaneous Branching Calculation -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
-                <h2 class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-4">Simultaneous Branching Calculation</h2>
+            <div class="glass-panel rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600"></div>
+                <h2 class="text-xs uppercase tracking-widest text-amber-400 font-semibold mb-7 font-cinzel text-sm">Simultaneous Counterfactual Branching</h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Branch A -->
-                    <div id="branch-a-card" class="bg-slate-950/80 border border-emerald-500/40 rounded-lg p-5 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 font-mono rounded-bl">RECOMMENDED</div>
-                        <div class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-1">Branch A: Send Notice</div>
-                        <div class="text-3xl font-bold mono text-white mb-3" id="res-prob-a">72%</div>
-                        <div class="text-xs text-slate-400 mb-4">Est. Pre-Court Recovery</div>
-                        <div class="space-y-2 border-t border-slate-800 pt-3 text-xs">
+                    <div id="branch-a-card" class="bg-[#0b0e14] border border-emerald-500/40 rounded-2xl p-7 relative overflow-hidden shadow-lg">
+                        <div class="absolute top-0 right-0 bg-emerald-500/15 text-emerald-400 text-[10px] px-4 py-1.5 font-mono rounded-bl-xl border-l border-b border-emerald-500/30 font-semibold tracking-wide">RECOMMENDED</div>
+                        <div class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-2">Branch A: Send Notice</div>
+                        <div class="text-6xl font-mono font-bold text-white my-3" id="res-prob-a">72%</div>
+                        <div class="text-xs text-slate-400 mb-4 tracking-wide">Est. Pre-Court Recovery Probability</div>
+                        <div class="space-y-3 border-t border-slate-800/80 pt-4 text-sm">
                             <div class="flex justify-between"><span class="text-slate-400">Litigation Risk:</span> <span id="risk-a" class="font-bold text-amber-400">MODERATE</span></div>
                             <div class="flex justify-between"><span class="text-slate-400">Limitation Shield:</span> <span class="font-bold text-emerald-400">Preserved</span></div>
                         </div>
                     </div>
 
                     <!-- Branch B -->
-                    <div id="branch-b-card" class="bg-slate-950/80 border border-rose-500/40 rounded-lg p-5">
-                        <div class="text-xs font-semibold text-rose-400 uppercase tracking-wider mb-1">Branch B: Withhold Notice</div>
-                        <div class="text-3xl font-bold mono text-white mb-3" id="res-prob-b">18%</div>
-                        <div class="text-xs text-slate-400 mb-4">Est. Informal Recovery</div>
-                        <div class="space-y-2 border-t border-slate-800 pt-3 text-xs">
+                    <div id="branch-b-card" class="bg-[#0b0e14] border border-rose-500/30 rounded-2xl p-7 shadow-lg">
+                        <div class="text-sm font-semibold text-rose-400 uppercase tracking-wider mb-2">Branch B: Withhold Notice</div>
+                        <div class="text-6xl font-mono font-bold text-white my-3" id="res-prob-b">18%</div>
+                        <div class="text-xs text-slate-400 mb-4 tracking-wide">Est. Informal Recovery Probability</div>
+                        <div class="space-y-3 border-t border-slate-800/80 pt-4 text-sm">
                             <div class="flex justify-between"><span class="text-slate-400">Litigation Risk:</span> <span id="risk-b" class="font-bold text-rose-500">CRITICAL</span></div>
                             <div class="flex justify-between"><span class="text-slate-400">Limitation Shield:</span> <span class="font-bold text-rose-400">At Risk</span></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 bg-slate-950 border border-slate-800 rounded-lg p-4 text-xs text-slate-300">
-                    <span class="font-semibold text-blue-400">Primary Consequence Note:</span> 
+                <div class="mt-6 bg-[#05070a] border border-slate-800 rounded-2xl p-6 text-sm text-slate-300 leading-relaxed">
+                    <span class="font-semibold text-amber-400">Primary Consequence Note:</span> 
                     <span id="consequence-text">Formal legal timeline activated. Opposing party mandated to cure or respond within 15 days.</span>
                 </div>
             </div>
 
             <!-- Mandatory Institutional Modules (Compulsory Purchase Value) -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
-                <h2 class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-4">Institutional Compliance & Audit Modules</h2>
+            <div class="glass-panel rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600"></div>
+                <h2 class="text-xs uppercase tracking-widest text-amber-400 font-semibold mb-7 font-cinzel text-sm">Institutional Compliance & Audit Modules</h2>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
-                    <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800">
-                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">Statutory Limit Shield</div>
-                        <div class="text-sm font-semibold text-emerald-400 mt-1">Safe (780 Days Left)</div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-[#0b0e14] p-6 rounded-2xl border border-slate-800 shadow-inner">
+                        <div class="text-xs text-slate-400 uppercase tracking-wider">Statutory Limit Shield</div>
+                        <div class="text-lg font-semibold text-emerald-400 mt-1.5">Safe (780 Days Left)</div>
                     </div>
-                    <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800">
-                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">Opponent Resistance</div>
-                        <div class="text-sm font-semibold text-amber-400 mt-1">Low-Medium</div>
+                    <div class="bg-[#0b0e14] p-6 rounded-2xl border border-slate-800 shadow-inner">
+                        <div class="text-xs text-slate-400 uppercase tracking-wider">Opponent Resistance</div>
+                        <div class="text-lg font-semibold text-amber-400 mt-1.5">Low-Medium</div>
                     </div>
-                    <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800">
-                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">Projected Burn-Rate</div>
-                        <div id="cost-exposure" class="text-sm font-semibold mono text-white mt-1">$7,500.00</div>
+                    <div class="bg-[#0b0e14] p-6 rounded-2xl border border-slate-800 shadow-inner">
+                        <div class="text-xs text-slate-400 uppercase tracking-wider">Projected Burn-Rate</div>
+                        <div id="cost-exposure" class="text-lg font-semibold mono text-white mt-1.5">$7,500.00</div>
                     </div>
                 </div>
 
-                <button onclick="alert('Certified Executive Audit Report generated and verified successfully for board submission.')"
-                    class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium py-2.5 px-4 rounded-lg transition text-xs tracking-wide flex items-center justify-center space-x-2">
-                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <span>Generate Certified Executive Audit Report (PDF)</span>
+                <button onclick="generateAuditReport()"
+                    class="w-full bg-[#0b0e14] hover:bg-[#121620] border border-amber-500/40 text-amber-300 font-medium py-5 px-6 rounded-2xl transition text-sm tracking-wide flex items-center justify-center space-x-3 shadow-lg cursor-pointer">
+                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <span class="uppercase font-semibold tracking-wider">Generate Certified Executive Audit Report (PDF)</span>
                 </button>
             </div>
 
@@ -135,6 +230,38 @@
 
     <!-- Interactive Engine Script -->
     <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            if(email.includes('@')) {
+                const modal = document.getElementById('auth-modal');
+                modal.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                modal.style.opacity = '0';
+                modal.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 800);
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            const modal = document.getElementById('auth-modal');
+            modal.style.display = 'flex';
+            modal.style.opacity = '1';
+            modal.style.transform = 'scale(1)';
+        }
+
+        function generateAuditReport() {
+            const amount = document.getElementById('claim_amount').value;
+            const breachAge = document.getElementById('breach_age_days').value;
+            const hasContract = document.getElementById('written_contract').checked;
+
+            const url = `/api/generate-pdf/?claim_amount=${amount}&breach_age_days=${breachAge}&written_contract=${hasContract}`;
+            window.open(url, '_blank');
+        }
+
         async function runSimulation() {
             const amount = document.getElementById('claim_amount').value;
             const breachAge = document.getElementById('breach_age_days').value;
@@ -156,15 +283,12 @@
                 if (response.ok) {
                     const data = await response.json();
                     
-                    // Update Branch A
                     document.getElementById('res-prob-a').innerText = Math.round(data.notice_yes.resolution_probability * 100) + '%';
                     document.getElementById('risk-a').innerText = data.notice_yes.litigation_risk;
                     
-                    // Update Branch B
                     document.getElementById('res-prob-b').innerText = Math.round(data.notice_no.resolution_probability * 100) + '%';
                     document.getElementById('risk-b').innerText = data.notice_no.litigation_risk;
                     
-                    // Update Consequence & Cost
                     document.getElementById('consequence-text').innerText = data.notice_yes.primary_consequence;
                     document.getElementById('cost-exposure').innerText = data.notice_yes.delta.cost_exposure;
                 }
@@ -173,7 +297,6 @@
             }
         }
 
-        // Auto trigger on input changes
         document.querySelectorAll('input').forEach(input => {
             input.addEventListener('input', runSimulation);
             input.addEventListener('change', runSimulation);

@@ -1,10 +1,7 @@
-"""
-URL routing for the legal_engine app.
-"""
 from django.urls import path
-from .views import dashboard_view, SimulateConsequenceView
+from .views import simulate_api, generate_audit_pdf
 
 urlpatterns = [
-    path('', dashboard_view, name='dashboard'),
-    path('api/simulate/', SimulateConsequenceView.as_view(), name='simulate-consequences'),
+    path('simulate/', simulate_api, name='simulate_api'),
+    path('generate-pdf/', generate_audit_pdf, name='generate_audit_pdf'),
 ]
