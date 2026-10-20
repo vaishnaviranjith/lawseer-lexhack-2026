@@ -1,6 +1,4 @@
-"""
-Core decision simulation and counterfactual risk engine for LAWSEER.
-"""
+"""Core decision simulation and counterfactual risk engine for LAWSEER."""
 from typing import Dict, Any
 
 class LegalRiskEngine:
@@ -8,10 +6,19 @@ class LegalRiskEngine:
         self.facts = case_facts
 
     def evaluate_notice_decision(self, send_notice: bool) -> Dict[str, Any]:
-        dispute_amount = float(self.facts.get("claim_amount", 0))
-        breach_age_days = int(self.facts.get("breach_age_days", 0))
+        # Safely parse numeric inputs to prevent empty string crashes
+        try:
+            dispute_amount = float(self.facts.get("claim_amount") or 0)
+        except (ValueError, TypeError):
+            dispute_amount = 0.0
+
+        try:
+            breach_age_days = int(self.facts.get("breach_age_days") or 0)
+        except (ValueError, TypeError):
+            breach_age_days = 0
+
         has_clear_liability = bool(self.facts.get("written_contract", False))
-        
+
         if send_notice:
             resolution_prob = 0.72 if has_clear_liability else 0.45
             litigation_risk = "MODERATE" if breach_age_days < 90 else "HIGH"
